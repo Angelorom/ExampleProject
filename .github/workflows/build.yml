@@ -33,6 +33,8 @@ jobs:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
+      - name: Move to Maven project directory  # Aggiungi questo step per spostarti nella cartella giusta
+        run: cd my-app   # Sostituisci "my-app" con il nome della tua cartella Maven
       - name: Build and analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
