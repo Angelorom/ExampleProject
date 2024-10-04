@@ -37,11 +37,8 @@ jobs:
         run: pwd
       - name: List directory contents  # Aggiungi questo step per elencare i file presenti
         run: ls -la
-      - name: Move to Maven project directory  # Sposta GitHub Actions nella directory del progetto Maven
-        run: cd my-app   # Sostituisci "my-app" con la tua directory se necessario
-      - name: Check Maven directory contents  # Controlla se il file pom.xml è presente nella directory
-        run: ls -la
-      - name: Build and analyze
+      - name: Build and analyze in project directory
+        working-directory: ./my-app  # Specifica la directory del progetto Maven
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
