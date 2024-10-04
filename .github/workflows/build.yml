@@ -1,12 +1,3 @@
-name: SonarCloud
-
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    types: [opened, synchronize, reopened]
-
 jobs:
   build:
     name: Build and analyze
@@ -33,8 +24,14 @@ jobs:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
-      - name: Move to Maven project directory
-        run: cd my-app   # Sposta GitHub Actions nella directory del progetto Maven
+      - name: Check current directory  # Aggiungi questo step per verificare la directory corrente
+        run: pwd
+      - name: List directory contents  # Aggiungi questo step per elencare i file presenti
+        run: ls -la
+      - name: Move to Maven project directory  # Sposta GitHub Actions nella directory del progetto Maven
+        run: cd my-app   # Sostituisci "my-app" con la tua directory se necessario
+      - name: Check Maven directory contents  # Controlla se il file pom.xml è presente nella directory
+        run: ls -la
       - name: Build and analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
