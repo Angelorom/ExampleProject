@@ -1,6 +1,0 @@
-[submodule "jgit-cookbook"]
-	path = jgit-cookbook
-	url = https://github.com/centic9/jgit-cookbook.git
-[submodule "commons-logging"]
-	path = commons-logging
-	url = https://github.com/apache/commons-logging.git
