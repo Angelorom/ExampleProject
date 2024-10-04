@@ -33,13 +33,8 @@ jobs:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
-      - name: Check current directory  # Aggiungi questo step per verificare la directory corrente
-        run: pwd
-      - name: List directory contents  # Aggiungi questo step per elencare i file presenti
-        run: ls -la
-      - name: Build and analyze in project directory
-        working-directory: ./my-app  # Specifica la directory del progetto Maven
+      - name: Build and analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=angelorom_ExampleProject
+        run: cd my-app && mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=angelorom_ExampleProject
