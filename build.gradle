@@ -1,0 +1,39 @@
+apply plugin: 'java'
+
+repositories {
+  mavenCentral()
+  maven {
+    url "https://repo.eclipse.org/content/groups/releases/"
+  }
+}
+
+dependencies {
+	implementation 'org.eclipse.jgit:org.eclipse.jgit:6.10.0.202406032230-r'
+	implementation 'org.eclipse.jgit:org.eclipse.jgit.archive:6.10.0.202406032230-r'
+	implementation 'org.eclipse.jgit:org.eclipse.jgit.ssh.jsch:6.10.0.202406032230-r'
+	implementation 'org.eclipse.jgit:org.eclipse.jgit.ssh.apache:6.10.0.202406032230-r'
+	implementation 'commons-io:commons-io:2.17.0'
+	implementation 'org.slf4j:slf4j-simple:2.0.10'
+
+    // optional dependency of commons-compress which is needed by JGit
+    implementation 'org.tukaani:xz:1.9'
+
+    testImplementation 'org.junit.vintage:junit-vintage-engine:5.11.0'
+}
+
+wrapper {
+    gradleVersion = '8.5'
+}
+
+task adjustWrapperPropertiesFile {
+    doLast {
+        ant.replaceregexp(match: '^#.*', replace: '', flags: 'g', byline: true) {
+            fileset(dir: project.projectDir, includes: 'gradle/wrapper/gradle-wrapper.properties')
+        }
+        new File(project.projectDir, 'gradle/wrapper/gradle-wrapper.properties').with {
+            it.text = it.readLines().findAll { it }.sort().join('\n')
+        }
+        ant.fixcrlf(file: 'gradle/wrapper/gradle-wrapper.properties', eol: 'lf')
+    }
+}
+wrapper.finalizedBy adjustWrapperPropertiesFile
