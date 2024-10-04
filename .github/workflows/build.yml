@@ -47,5 +47,6 @@ jobs:
           mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
         -Dsonar.projectKey=angelorom_angelo \
         -Dsonar.organization=angelorom
-        continue-on-error: true
+        -Dmaven.test.failure.ignore=true
+
             
