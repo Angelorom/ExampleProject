@@ -40,13 +40,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: https://sonarcloud.io 
+          SONAR_HOST_URL: https://sonarcloud.io  # Aggiungi l'URL di SonarCloud
         run: |
           git submodule update --init --recursive
           cd jgit-cookbook
           mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
-        -Dsonar.projectKey=angelorom_angelo \
-        -Dsonar.organization=angelorom \
-        -Dmaven.test.failure.ignore=true
-
-            
+            -Dsonar.projectKey=angelorom_angelo \
+            -Dsonar.organization=angelorom \
+            -Dmaven.test.failure.ignore=true
