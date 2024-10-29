@@ -1,0 +1,28 @@
+name: Mutation Testing on Terraform
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  validate-and-mutate:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout del repository
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # 2. Set up Terraform
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: latest
+
+      - name: Terraform Validate on Mutated Code
+        run: terraform validate
+
+
+      - name: Run Terratest
+        run: go test -v ./test/
