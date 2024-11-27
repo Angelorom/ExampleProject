@@ -1,0 +1,48 @@
+name: LocalStack Terraform Test
+
+on:
+  push:
+    branches:
+      - '**'
+
+  workflow_dispatch: {}
+
+jobs:
+  localstack-terraform-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Build and Start LocalStack Container
+      run: |
+        docker compose up -d
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: latest
+
+    - name: Run Terraform Init and Validation
+      run: |
+        terraform init
+        terraform validate
+        terraform fmt --recursive --check
+        terraform plan
+        terraform show
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+    - name: run mutation testing
+      run: |
+        python applica_mutazioni.py
+    - name: Archive Terraform Logs
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: terraform-logs
+        path: ./terraform.log  # Path del file di log da generare
+
+    - name: Stop and Delete LocalStack Container
+      if: always()
+      run: docker compose down
